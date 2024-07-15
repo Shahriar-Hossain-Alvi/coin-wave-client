@@ -7,7 +7,17 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'raleway': ["Raleway", "sans-serif"]
+      },
+      colors: {
+        cwCream: '#FFF6E9',
+        cwOrange: '#FF7F3E',
+        cwLightBlue: '#80C4E9',
+        cwViolate: '#604CC3'
+      }
+    },
   },
   plugins: [daisyui],
 }
