@@ -1,0 +1,5 @@
+#sidebar a.active{
+    background-color: #FF7F3E;
+    color: black;
+    font-weight: bold;
+}

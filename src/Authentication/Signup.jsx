@@ -1,107 +1,71 @@
+import { useState } from "react";
+import AgentSignUpForm from "../components/AgentSignUpForm/AgentSignUpForm";
+import UserSignupForm from "../components/UserSignupForm/UserSignupForm";
+import { Slide } from "react-awesome-reveal";
 
 const Signup = () => {
+    const [activeTab, setActiveTab] = useState('user');
+
+    const handleUserSignUp = e => {
+        e.preventDefault();
+        const form = e.target;
+        const name = form.name.value;
+        const mobileNumber = form.mobileNumber.value;
+        const email = form.email.value;
+        const pin = form.pin.value;
+        const role = "user";
+        const status = "pending";
+
+        const signUpData = {
+            name, email, mobileNumber, pin, role, status
+        }
+
+        console.log(signUpData);
+    }
+
+
+    const handleAgentSignUp = e => {
+        e.preventDefault();
+        const form = e.target;
+        const name = form.name.value;
+        const mobileNumber = form.mobileNumber.value;
+        const email = form.email.value;
+        const pin = form.pin.value;
+        const role = "agent";
+        const status = "pending";
+
+        const signUpData = {
+            name, email, mobileNumber, pin, role, status
+        }
+
+        console.log(signUpData);
+    }
+
+    console.log(activeTab);
+
     return (
-        <div className="bg-cwCream">
-            {/* user registration */}
-            <div className="pt-20 min-h-screen">
-                <div className="hero-content flex-col">
-                    <div className="text-center">
-                        <h1 className="text-5xl font-bold">Sign Up</h1>
-                        <p className="py-6 text-xl font-medium">
-                            Fill up the form below to create a new account
-                        </p>
-                    </div>
+        <div className="bg-cwCream overflow-hidden">
 
-                    <div className="card w-full shadow-2xl">
-                        <form className="card-body">
-                            {/* name */}
-                            <div className="form-control">
-                                <label className="label">
-                                    <span className="label-text">Name</span>
-                                </label>
-                                <input name="name" type="text" placeholder="Enter your name" className="input input-bordered" required />
-                            </div>
+            <div className="pt-10 text-center">
+                <button onClick={() => setActiveTab('user')} className={`btn ${activeTab === 'user' ? 'bg-cwViolate border-cwViolate' : 'bg-transparent text-black border-cwViolate'}  text-white rounded-full rounded-r-none hover:bg-cwOrange hover:text-white`}>User Registration</button>
 
-                            {/* email */}
-                            <div className="form-control">
-                                <label className="label">
-                                    <span className="label-text">Email</span>
-                                </label>
-                                <input name="email" type="email" placeholder="Enter your email" className="input input-bordered" required />
-                            </div>
-
-
-                            {/* mobile number */}
-                            <div className="form-control">
-                                <label className="label">
-                                    <span className="label-text">Mobile Number</span>
-                                </label>
-                                <input name="mobileNumber" type="text" placeholder="Enter your name" className="input input-bordered" required />
-                            </div>
-
-
-
-
-
-
-
-                            <div className="form-control">
-                                <label className="label">
-                                    <span className="label-text">Password</span>
-                                </label>
-                                <input type="password" placeholder="password" className="input input-bordered" required />
-                                <label className="label">
-                                    <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
-                                </label>
-                            </div>
-                            <div className="form-control mt-6">
-                                <button className="btn btn-primary">Login</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                <button onClick={() => setActiveTab('agent')} className={`btn ${activeTab === 'agent' ? 'bg-cwViolate border-cwViolate' : 'bg-transparent text-black border-cwViolate'} text-white rounded-full hover:bg-cwOrange rounded-l-none hover:text-white`}>Agent Registration</button>
             </div>
 
 
+            {
+                activeTab === 'user' ?
+                    <Slide>
+                        <UserSignupForm handleUserSignUp={handleUserSignUp}></UserSignupForm>
+                    </Slide>
+                    :
+                    <Slide direction="right">
+                        <AgentSignUpForm handleAgentSignUp={handleAgentSignUp}></AgentSignUpForm>
+                    </Slide>
+            }
 
 
 
-            {/* agent registration */}
-
-
-            <div className="hero bg-base-200 min-h-screen">
-                <div className="hero-content flex-col lg:flex-row-reverse">
-                    <div className="text-center lg:text-left">
-                        <h1 className="text-5xl font-bold">Sign Up</h1>
-                        <p className="py-6">
-                            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-                            quasi. In deleniti eaque aut repudiandae et a id nisi.
-                        </p>
-                    </div>
-                    <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-                        <form className="card-body">
-                            <div className="form-control">
-                                <label className="label">
-                                    <span className="label-text">Email</span>
-                                </label>
-                                <input type="email" placeholder="email" className="input input-bordered" required />
-                            </div>
-                            <div className="form-control">
-                                <label className="label">
-                                    <span className="label-text">Password</span>
-                                </label>
-                                <input type="password" placeholder="password" className="input input-bordered" required />
-                                <label className="label">
-                                    <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
-                                </label>
-                            </div>
-                            <div className="form-control mt-6">
-                                <button className="btn btn-primary">Login</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
     );
 };
