@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const UserSignupForm = ({ handleUserSignUp }) => {
+const UserSignupForm = ({ handleUserSignUp, pinError }) => {
     return (
         <div className="pt-20 min-h-screen">
             <div className="hero-content flex-col">
@@ -45,9 +45,10 @@ const UserSignupForm = ({ handleUserSignUp }) => {
                                 <span className="label-text">PIN (must use 5 digit)</span>
                             </label>
                             <input name="pin" type="number" placeholder="Enter a 5 digit pin number (Not more or less than 5)" className="input input-bordered" required />
+                            <span className='text-red-600'>{pinError}</span>
                         </div>
                         <div className="form-control mt-6">
-                            <button className="btn btn-primary">Sign up</button>
+                            <button className="btn bg-cwViolate text-white hover:bg-cwOrange">Sign up</button>
                         </div>
                     </form>
                 </div>
@@ -58,6 +59,7 @@ const UserSignupForm = ({ handleUserSignUp }) => {
 
 UserSignupForm.propTypes = {
     handleUserSignUp: PropTypes.func,
+    pinError: PropTypes.string,
 }
 
 export default UserSignupForm;

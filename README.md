@@ -3,6 +3,8 @@ technologies used
 react
 tailwind
 html
+axios
+tanStack query
 
 
 packages used
@@ -11,3 +13,4 @@ react icons
 daisyUi
 prop-types
 react-awesome-reveal
+
