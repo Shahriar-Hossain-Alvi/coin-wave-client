@@ -4,7 +4,7 @@ import UserSignupForm from "../components/UserSignupForm/UserSignupForm";
 import { Slide } from "react-awesome-reveal";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
     const [activeTab, setActiveTab] = useState('user');
@@ -31,7 +31,7 @@ const Signup = () => {
                 name, email, mobileNumber, pin, role, status, firstTimeLogin, balance, profileCreationTime
             }
 
-            const res = await axiosPublic.post('/users', signUpData);
+            const res = await axiosPublic.post('/signup', signUpData);
             if (res.data.insertedId) {
                 Swal.fire({
                     title: "Signup complete",
@@ -55,9 +55,7 @@ const Signup = () => {
         }
     }
 
-    console.log(pinError);
-
-    const handleAgentSignUp = async(e) => {
+    const handleAgentSignUp = async (e) => {
         e.preventDefault();
         const form = e.target;
         const name = form.name.value;
@@ -113,6 +111,10 @@ const Signup = () => {
                 <button onClick={() => setActiveTab('user')} className={`btn ${activeTab === 'user' ? 'bg-cwViolate border-cwViolate text-white ' : 'bg-transparent text-black border-cwViolate'} rounded-full rounded-r-none hover:bg-cwOrange hover:text-white`}>User Registration</button>
 
                 <button onClick={() => setActiveTab('agent')} className={`btn ${activeTab === 'agent' ? 'bg-cwViolate border-cwViolate text-white' : 'bg-transparent text-black border-cwViolate'} rounded-full hover:bg-cwOrange rounded-l-none hover:text-white`}>Agent Registration</button>
+            </div>
+
+            <div className="text-center mt-5">
+                <p className="font-medium text-lg">Signed up already? <Link to='/login' className="text-cwOrange font-bold underline">Login</Link> to your account.</p>
             </div>
 
 

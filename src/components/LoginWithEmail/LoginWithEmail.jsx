@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 
-const LoginWithEmail = ({handleLogInWithEmail}) => {
+const LoginWithEmail = ({ handleLogInWithEmail, pinError }) => {
     return (
         <div className="pt-10 min-h-screen">
             <div className="hero-content flex-col">
 
-            <div className="text-center">
+                <div className="text-center">
                     <h1 className="text-5xl font-bold">Login</h1>
                     <p className="py-6 text-xl font-medium">
                         Use your email to log in to your account
@@ -30,6 +30,7 @@ const LoginWithEmail = ({handleLogInWithEmail}) => {
                                 <span className="label-text">PIN (must use 5 digit)</span>
                             </label>
                             <input name="pin" type="number" placeholder="Enter a 5 digit pin number (Not more or less than 5)" className="input input-bordered" required />
+                            <p className='text-red-600'>{pinError}</p>
                         </div>
                         <div className="form-control mt-6">
                             <button className="btn btn-primary">Sign up</button>
@@ -43,6 +44,7 @@ const LoginWithEmail = ({handleLogInWithEmail}) => {
 
 LoginWithEmail.propTypes = {
     handleLogInWithEmail: PropTypes.func,
+    pinError: PropTypes.string,
 }
 
 export default LoginWithEmail;
