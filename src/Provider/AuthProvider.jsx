@@ -11,10 +11,36 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const axiosPublic = useAxiosPublic();
 
+
+    //save access token
     const saveAccessToken = (token) => {
         localStorage.setItem('access-token', token);
     }
 
+    //save user info in the local storage
+    const getUserInfo = async () => {
+        const token = localStorage.getItem('access-token');
+        if (!token) {
+            console.log('Token not found');
+            setLoading(false);
+            return;
+        }
+
+        else if (token) {
+            const res = await axiosPublic.get('/user', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (res.data) {
+                setLoading(false);
+                setUser(res.data);
+                localStorage.setItem('userInfo', JSON.stringify(res.data));
+            }
+        }
+    }
+
+    //load user data from local storage
     const loadUserFromLocalStorage = () => {
         const userInfo = localStorage.getItem('userInfo');
         if (userInfo) {
@@ -23,7 +49,15 @@ const AuthProvider = ({ children }) => {
         setLoading(false);
     }
 
-    useEffect(()=>{
+
+    //logout user
+    const logout = () => {
+        localStorage.removeItem('access-token');
+        localStorage.removeItem('userInfo');
+        setUser(null);
+    };
+
+    useEffect(() => {
         setLoading(true);
         loadUserFromLocalStorage();
     }, [])
@@ -33,7 +67,9 @@ const AuthProvider = ({ children }) => {
         saveAccessToken,
         setUser,
         loading,
-        setLoading
+        setLoading,
+        getUserInfo,
+        logout
     }
 
     return (

@@ -12,32 +12,12 @@ const Login = () => {
     const [loginMethod, setLoginMethod] = useState('email');
     const [pinError, setPinError] = useState('');
     const axiosPublic = useAxiosPublic();
-    const { saveAccessToken, loading, setLoading, setUser, user } = useContext(AuthContext);
+    const { saveAccessToken, loading, setLoading, setUser, user, getUserInfo } = useContext(AuthContext);
     const navigate = useNavigate();
 
     console.log(user);
 
-    const getUserInfo = async () => {
-        const token = localStorage.getItem('access-token');
-        if (!token) {
-            console.log('Token not found');
-            setLoading(false);
-            return;
-        }
 
-        else if (token) {
-            const res = await axiosPublic.get('/user', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            if (res.data) {
-                setLoading(false);
-                setUser(res.data);
-                localStorage.setItem('userInfo', JSON.stringify(res.data));
-            }
-        }
-    }
 
 
     const handleLogInWithEmail = async (e) => {

@@ -1,15 +1,26 @@
 import { IoMenu } from "react-icons/io5";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./Sidebar.css"
+import { FiLogOut } from "react-icons/fi";
+import { useContext } from "react";
+import { AuthContext } from "../../../Provider/AuthProvider";
 
 const Sidebar = () => {
+    const { logout } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    }
+
     return (
         <div id="sidebar">
             {/* for large device */}
-            <div className="hidden lg:block lg:w-44 bg-cwViolate text-white min-h-screen">
+            <div className="hidden lg:flex lg:flex-col lg:w-44 bg-cwViolate text-white min-h-screen">
                 <button className="btn btn-block bg-transparent text-white border-none hover:bg-transparent mt-2 shadow-none text-2xl mb-5 font-bold">Coin Wave</button>
 
-                <ul className="menu">
+                <ul className="menu flex-1">
                     <li>
                         <NavLink to='/'>Dashboard</NavLink>
                     </li>
@@ -26,6 +37,13 @@ const Sidebar = () => {
                         <NavLink to='/cashOut'>Cash-out</NavLink>
                     </li>
                 </ul>
+
+                <div className="w-full">
+                    <button onClick={handleLogout} className="btn w-full bg-cwViolate text-white border-none hover:bg-cwOrange text-lg font-medium">
+                        Logout
+                        <FiLogOut />
+                    </button>
+                </div>
             </div>
 
 
