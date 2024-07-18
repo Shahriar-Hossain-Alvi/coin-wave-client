@@ -1,6 +1,7 @@
-import { createContext, useState } from "react";
-import useAxiosPublic from "../Hooks/useAxiosPublic";
+import { createContext, useEffect, useState } from "react";
 import PropTypes from 'prop-types';
+import useAxiosPublic from "../Hooks/useAxiosPublic";
+
 
 export const AuthContext = createContext(null);
 
@@ -10,15 +11,29 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const axiosPublic = useAxiosPublic();
 
-    const saveAccessToken = token => {
+    const saveAccessToken = (token) => {
         localStorage.setItem('access-token', token);
     }
 
+    const loadUserFromLocalStorage = () => {
+        const userInfo = localStorage.getItem('userInfo');
+        if (userInfo) {
+            setUser(JSON.parse(userInfo));
+        }
+        setLoading(false);
+    }
+
+    useEffect(()=>{
+        setLoading(true);
+        loadUserFromLocalStorage();
+    }, [])
+
     const authInfo = {
         user,
+        saveAccessToken,
+        setUser,
         loading,
-        setLoading,
-        saveAccessToken
+        setLoading
     }
 
     return (

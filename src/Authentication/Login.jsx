@@ -5,19 +5,40 @@ import LoginWithMobile from "../components/LoginWithMobile/LoginWithMobile";
 import { Slide } from "react-awesome-reveal";
 import { Link, useNavigate } from "react-router-dom";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
-import Swal from "sweetalert2";
 import { AuthContext } from "../Provider/AuthProvider";
-import { ImSpinner5 } from "react-icons/im";
 
 
 const Login = () => {
     const [loginMethod, setLoginMethod] = useState('email');
     const [pinError, setPinError] = useState('');
     const axiosPublic = useAxiosPublic();
+    const { saveAccessToken, loading, setLoading, setUser, user } = useContext(AuthContext);
     const navigate = useNavigate();
-    const { saveAccessToken, loading, setLoading } = useContext(AuthContext);
 
-    if (loading) return <ImSpinner5 />
+    console.log(user);
+
+    const getUserInfo = async () => {
+        const token = localStorage.getItem('access-token');
+        if (!token) {
+            console.log('Token not found');
+            setLoading(false);
+            return;
+        }
+
+        else if (token) {
+            const res = await axiosPublic.get('/user', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (res.data) {
+                setLoading(false);
+                setUser(res.data);
+                localStorage.setItem('userInfo', JSON.stringify(res.data));
+            }
+        }
+    }
+
 
     const handleLogInWithEmail = async (e) => {
         e.preventDefault();
@@ -35,28 +56,15 @@ const Login = () => {
             const res = await axiosPublic.post('/login', loginData);
 
             if (res.data.token) {
-                setLoading(false);
                 saveAccessToken(res.data.token);
+                if (localStorage.getItem('access-token')) {
+                    await getUserInfo();
+                    navigate('/');
+                }
             }
-
-            console.log(res.data.token);
-            // if (res.data.insertedId) {
-            //     Swal.fire({
-            //         title: "Signup complete",
-            //         text: "Wait for admin approval before logging in to your account",
-            //         icon: "success",
-            //         showCancelButton: false,
-            //         confirmButtonColor: "#008000",
-            //         confirmButtonText: "Ok"
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             navigate('/login');
-            //         }
-            //     });
-            // }
-            // else {
-            //     Swal.fire("Sign up failed");
-            // }
+            else {
+                setLoading(false);
+            }
         }
         else if (pin.toString().length > 5 || pin.toString().length < 5) {
             setPinError('Pin must be 5 digits');
@@ -77,6 +85,7 @@ const Login = () => {
     }
 
 
+
     return (
         <div className="bg-cwCream overflow-hidden">
             <div className="pt-10 text-center">
@@ -93,7 +102,8 @@ const Login = () => {
                 loginMethod === 'email' ?
                     <Slide>
                         <LoginWithEmail handleLogInWithEmail={handleLogInWithEmail}
-                            pinError={pinError}></LoginWithEmail>
+                            pinError={pinError}
+                        ></LoginWithEmail>
                     </Slide>
                     :
                     <Slide direction="right">

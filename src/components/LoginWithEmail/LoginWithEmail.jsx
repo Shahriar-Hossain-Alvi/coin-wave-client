@@ -1,6 +1,11 @@
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import { ImSpinner4 } from 'react-icons/im';
+import { AuthContext } from '../../Provider/AuthProvider';
 
 const LoginWithEmail = ({ handleLogInWithEmail, pinError }) => {
+    const { loading } = useContext(AuthContext);
+
     return (
         <div className="pt-10 min-h-screen">
             <div className="hero-content flex-col">
@@ -33,7 +38,13 @@ const LoginWithEmail = ({ handleLogInWithEmail, pinError }) => {
                             <p className='text-red-600'>{pinError}</p>
                         </div>
                         <div className="form-control mt-6">
-                            <button className="btn btn-primary">Sign up</button>
+                            <button className="btn bg-cwViolate hover:bg-cwOrange text-white">
+                                {
+                                    loading ? <ImSpinner4 className='text-2xl animate-spin' />
+                                        :
+                                        'Sign up'
+                                }
+                            </button>
                         </div>
                     </form>
                 </div>
