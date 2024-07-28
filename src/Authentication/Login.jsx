@@ -51,17 +51,36 @@ const Login = () => {
         }
     }
 
-    const handleLogInWithMobile = e => {
+    const handleLogInWithMobile = async (e) => {
         e.preventDefault();
         const form = e.target;
         const mobileNumber = form.mobileNumber.value;
         const pin = form.pin.value;
 
-        const logInData = {
-            mobileNumber, pin
-        }
 
-        console.log(logInData);
+        if (pin.toString().length === 5) {
+            setPinError('');
+            const logInData = {
+                mobileNumber, pin
+            }
+
+            setLoading(true);
+            const res = await axiosPublic.post('/login', logInData);
+
+            if (res.data.token) {
+                saveAccessToken(res.data.token);
+                if (localStorage.getItem('access-token')) {
+                    await getUserInfo();
+                    navigate('/');
+                }
+            }
+            else {
+                setLoading(false);
+            }
+        }
+        else if (pin.toString().length > 5 || pin.toString().length < 5) {
+            setPinError('Pin must be 5 digits');
+        }
     }
 
 
