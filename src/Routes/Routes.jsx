@@ -3,15 +3,17 @@ import Main from "../Layouts/Main";
 import Dashboard from "../Dashboard/Dashboard";
 import Signup from "../Authentication/Signup";
 import Login from "../Authentication/Login";
+import ErrorRoute from "../Layouts/ErrorRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Main></Main>,
+    element: <Main />,
+    errorElement: <ErrorRoute />,
     children: [
       {
         path: "/",
-        element: <Dashboard></Dashboard>
+        element: <Dashboard />
       }
     ]
   },
@@ -19,11 +21,11 @@ const router = createBrowserRouter([
   //authentication routes
   {
     path: '/signup',
-    element: <Signup></Signup>
+    element: <Signup />
   },
   {
     path: '/login',
-    element: <Login></Login>
+    element: <Login />
   }
 ]);
 
