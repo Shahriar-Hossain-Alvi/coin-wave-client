@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
-import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import TableRows from "../../components/TableRows/TableRows";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const AllUsers = () => {
-    const axiosPublic = useAxiosPublic();
+    const axiosSecure = useAxiosSecure();
 
-    const { data: allUsers = [], isLoading, isError, error, refetch } = useQuery({
+    const { data: allUsers = [], isLoading, isError, error } = useQuery({
         queryKey: ['allUsers'],
         queryFn: async () => {
-            const res = await axiosPublic.get('/allUsers');
+            const res = await axiosSecure.get('/allUsers');
             return res.data;
         }
     });
