@@ -76,7 +76,7 @@ const Signup = () => {
                 name, email, mobileNumber, pin, role, status, firstTimeLogin, balance, profileCreationTime
             }
 
-            const res = await axiosPublic.post('/users', signUpData);
+            const res = await axiosPublic.post('/signup', signUpData);
 
             if (res.data.insertedId) {
                 Swal.fire({

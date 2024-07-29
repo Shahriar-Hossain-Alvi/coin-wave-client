@@ -17,7 +17,7 @@ const Sidebar = () => {
     return (
         <div id="sidebar">
             {/* for large device */}
-            <div className="hidden lg:flex lg:flex-col lg:w-44 bg-cwViolate text-white min-h-screen">
+            <div className="hidden h-full lg:flex lg:flex-col lg:w-44 bg-cwViolate text-white ">
                 <button className="btn btn-block bg-transparent text-white border-none hover:bg-transparent mt-2 shadow-none text-2xl mb-5 font-bold">Coin Wave</button>
 
                 <ul className="menu flex-1">

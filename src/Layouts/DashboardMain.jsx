@@ -1,7 +1,7 @@
-import { Outlet } from "react-router-dom";
-import Sidebar from "../components/Shared/Sidebar/Sidebar"
+import Sidebar from '../components/Shared/Sidebar/Sidebar';
+import { Outlet } from 'react-router-dom';
 
-const Main = () => {
+const DashboardMain = () => {
     return (
         <div className="bg-cwCream font-raleway flex gap-1">
             <Sidebar></Sidebar>
@@ -12,4 +12,4 @@ const Main = () => {
     );
 };
 
-export default Main;
+export default DashboardMain;

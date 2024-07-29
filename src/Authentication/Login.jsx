@@ -12,12 +12,8 @@ const Login = () => {
     const [loginMethod, setLoginMethod] = useState('email');
     const [pinError, setPinError] = useState('');
     const axiosPublic = useAxiosPublic();
-    const { saveAccessToken, setLoading, user, getUserInfo } = useContext(AuthContext);
+    const { saveAccessToken, setLoading, getUserInfo } = useContext(AuthContext);
     const navigate = useNavigate();
-
-    console.log(user);
-
-
 
 
     const handleLogInWithEmail = async (e) => {
