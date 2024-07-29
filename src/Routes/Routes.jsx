@@ -5,6 +5,7 @@ import ErrorRoute from "../Layouts/ErrorRoute";
 
 import Dashboard from "../Dashboard/Dashboard";
 import DashboardMain from "../Layouts/DashboardMain";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Dashboard /> 
+        element: <PrivateRoute><Dashboard /></PrivateRoute>
       }
     ]
   },
