@@ -4,10 +4,12 @@ import "./Sidebar.css"
 import { FiLogOut } from "react-icons/fi";
 import { useContext } from "react";
 import { AuthContext } from "../../../Provider/AuthProvider";
+import useRole from "../../../Hooks/useRole";
 
 const Sidebar = () => {
     const { logout } = useContext(AuthContext);
     const navigate = useNavigate();
+    const [role] = useRole();
 
     const handleLogout = () => {
         logout();
@@ -20,23 +22,66 @@ const Sidebar = () => {
             <div className="hidden h-full lg:flex lg:flex-col lg:w-44 bg-cwViolate text-white ">
                 <button className="btn btn-block bg-transparent text-white border-none hover:bg-transparent mt-2 shadow-none text-2xl mb-5 font-bold">Coin Wave</button>
 
-                <ul className="menu flex-1">
-                    <li>
-                        <NavLink to='/'>Dashboard</NavLink>
-                    </li>
+                {/* routes for admin */}
+                {
+                    role === 'admin' &&
+                    <ul className="menu flex-1">
+                        <li>
+                            <NavLink to='/'>Dashboard</NavLink>
+                        </li>
 
-                    <li>
-                        <NavLink to='/transactions'>Transactions</NavLink>
-                    </li>
+                        <li>
+                            <NavLink to='/allUsers'>All Users</NavLink>
+                        </li>
 
-                    <li>
-                        <NavLink to='/cashIn'>Cash-in</NavLink>
-                    </li>
+                        <li>
+                            <NavLink to='/allTransactions'>All Transactions</NavLink>
+                        </li>
+                    </ul>
+                }
 
-                    <li>
-                        <NavLink to='/cashOut'>Cash-out</NavLink>
-                    </li>
-                </ul>
+
+                {/* routes for agent */}
+                {
+                    role === 'agent' &&
+                    <ul className="menu flex-1">
+                        <li>
+                            <NavLink to='/'>Dashboard</NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to='/cashInRequests'>Cash-in Requests</NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to='/cashOutRequests'>Cash-out Requests</NavLink>
+                        </li>
+                    </ul>
+                }
+
+                {/* routes for users */}
+                {
+                    role === "user" &&
+                    <ul className="menu flex-1">
+                        <li>
+                            <NavLink to='/'>Dashboard</NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to='/transactions'>Transactions</NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to='/cashIn'>Cash-in</NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to='/cashOut'>Cash-out</NavLink>
+                        </li>
+                    </ul>
+                }
+
+
 
                 <div className="w-full">
                     <button onClick={handleLogout} className="btn w-full bg-cwViolate text-white border-none hover:bg-cwOrange text-lg font-medium">

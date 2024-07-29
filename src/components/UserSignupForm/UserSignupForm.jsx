@@ -1,8 +1,13 @@
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet-async';
 
 const UserSignupForm = ({ handleUserSignUp, pinError }) => {
     return (
         <div className="pt-20 min-h-screen">
+            <Helmet>
+                <title>User Registration | Coin Wave </title>
+            </Helmet>
+
             <div className="hero-content flex-col">
                 <div className="text-center">
                     <h1 className="text-5xl font-bold">Sign Up</h1>

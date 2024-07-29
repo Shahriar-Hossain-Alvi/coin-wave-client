@@ -2,12 +2,16 @@ import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { ImSpinner4 } from 'react-icons/im';
 import { AuthContext } from '../../Provider/AuthProvider';
+import { Helmet } from 'react-helmet-async';
 
 const LoginWithEmail = ({ handleLogInWithEmail, pinError }) => {
     const { loading } = useContext(AuthContext);
 
     return (
         <div className="pt-10 min-h-screen">
+            <Helmet>
+                <title>Login with email | Coin Wave </title>
+            </Helmet>
             <div className="hero-content flex-col">
 
                 <div className="text-center">

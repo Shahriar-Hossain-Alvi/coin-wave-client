@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import LoginWithEmail from "../components/LoginWithEmail/LoginWithEmail";
 import LoginWithMobile from "../components/LoginWithMobile/LoginWithMobile";
 import { Slide } from "react-awesome-reveal";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import { AuthContext } from "../Provider/AuthProvider";
 
@@ -14,7 +14,8 @@ const Login = () => {
     const axiosPublic = useAxiosPublic();
     const { saveAccessToken, setLoading, getUserInfo } = useContext(AuthContext);
     const navigate = useNavigate();
-
+    const location = useLocation();
+    const from = location?.state?.from?.pathname || '/';
 
     const handleLogInWithEmail = async (e) => {
         e.preventDefault();
@@ -35,7 +36,7 @@ const Login = () => {
                 saveAccessToken(res.data.token);
                 if (localStorage.getItem('access-token')) {
                     await getUserInfo();
-                    navigate('/');
+                    navigate(from, { replace: true });
                 }
             }
             else {
@@ -67,7 +68,7 @@ const Login = () => {
                 saveAccessToken(res.data.token);
                 if (localStorage.getItem('access-token')) {
                     await getUserInfo();
-                    navigate('/');
+                    navigate(from, { replace: true });
                 }
             }
             else {
