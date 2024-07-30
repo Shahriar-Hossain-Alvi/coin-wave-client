@@ -14,6 +14,11 @@ const AllUsers = () => {
         }
     });
 
+    const handleUserApprove = id => {
+        console.log('approved', id);
+        const status = 'active';
+    }
+
     console.log(allUsers);
 
     return (
@@ -44,12 +49,18 @@ const AllUsers = () => {
                             <th>email</th>
                             <th>Role</th>
                             <th>Account Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {
-                            allUsers.map((singleUser, index) => <TableRows key={singleUser._id} index={index} singleUser={singleUser} />)
+                            allUsers.map((singleUser, index) => <TableRows 
+                            key={singleUser._id} 
+                            index={index} 
+                            singleUser={singleUser}
+                            handleUserApprove={handleUserApprove}
+                            />)
                         }
                     </tbody>
                 </table>

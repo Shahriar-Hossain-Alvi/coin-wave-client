@@ -6,6 +6,7 @@ import { Slide } from "react-awesome-reveal";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import { AuthContext } from "../Provider/AuthProvider";
+import Swal from "sweetalert2";
 
 
 const Login = () => {
@@ -31,6 +32,14 @@ const Login = () => {
 
             setLoading(true);
             const res = await axiosPublic.post('/login', loginData);
+            if (res?.data?.accountStatus === 'pending') {
+                Swal.fire({
+                    text: `${res?.data?.message}`,
+                    icon: "error"
+                });
+                form.reset();
+            }
+
 
             if (res.data.token) {
                 saveAccessToken(res.data.token);
@@ -63,6 +72,13 @@ const Login = () => {
 
             setLoading(true);
             const res = await axiosPublic.post('/login', logInData);
+            if (res?.data?.accountStatus === 'pending') {
+                Swal.fire({
+                    text: `${res?.data?.message}`,
+                    icon: "error"
+                });
+                form.reset();
+            }
 
             if (res.data.token) {
                 saveAccessToken(res.data.token);
