@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { FcApprove, FcDisapprove } from 'react-icons/fc';
 import { GoDotFill } from 'react-icons/go';
 
-const TableRows = ({ singleUser, index, handleUserApprove }) => {
+const TableRows = ({ singleUser, index, activateUserAccount, blockUserAccount }) => {
     const { _id, name, email, role, status } = singleUser;
 
     return (
@@ -41,15 +41,11 @@ const TableRows = ({ singleUser, index, handleUserApprove }) => {
             <td>
                 {
                     (status === 'pending' || status === 'blocked') &&
-                    <td>
-                        <button onClick={() => handleUserApprove(_id)} className='btn btn-success text-white capitalize flex gap-1'>Activate<FcApprove className='text-lg' /></button>
-                    </td>
+                    <button onClick={() => activateUserAccount(_id)} className='btn btn-success text-white capitalize flex gap-1'>Activate<FcApprove className='text-lg' /></button>
                 }
                 {
                     status === 'active' &&
-                    <td>
-                        <button className='btn btn-error text-white capitalize flex gap-1'>block<FcDisapprove className='text-lg' /></button>
-                    </td>
+                    <button onClick={()=>blockUserAccount(_id)} className='btn btn-error text-white capitalize flex gap-1'>block<FcDisapprove className='text-lg' /></button>
                 }
             </td>
 
@@ -60,7 +56,8 @@ const TableRows = ({ singleUser, index, handleUserApprove }) => {
 TableRows.propTypes = {
     singleUser: PropTypes.object,
     index: PropTypes.number,
-    handleUserApprove: PropTypes.func
+    activateUserAccount: PropTypes.func,
+    blockUserAccount: PropTypes.func
 }
 
 export default TableRows;

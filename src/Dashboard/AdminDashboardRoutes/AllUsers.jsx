@@ -6,7 +6,7 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
 
-    const { data: allUsers = [], isLoading, isError, error } = useQuery({
+    const { data: allUsers = [], isLoading, isError, error, refetch } = useQuery({
         queryKey: ['allUsers'],
         queryFn: async () => {
             const res = await axiosSecure.get('/allUsers');
@@ -14,12 +14,27 @@ const AllUsers = () => {
         }
     });
 
-    const handleUserApprove = id => {
-        console.log('approved', id);
-        const status = 'active';
+    const activateUserAccount = async (id) => {
+        const updateStatus = {
+            id, status: 'active'
+        }
+
+        const res = await axiosSecure.patch('/user', updateStatus);
+
+        if (res.data.modifiedCount > 0) refetch();
     }
 
-    console.log(allUsers);
+
+    const blockUserAccount = async (id) => {
+        const updateStatus = {
+            id, status: 'blocked'
+        }
+
+        const res = await axiosSecure.patch('/user', updateStatus);
+
+        if (res.data.modifiedCount > 0) refetch();
+    }
+
 
     return (
         <div className="min-h-screen mt-10">
@@ -55,11 +70,13 @@ const AllUsers = () => {
 
                     <tbody>
                         {
-                            allUsers.map((singleUser, index) => <TableRows 
-                            key={singleUser._id} 
-                            index={index} 
-                            singleUser={singleUser}
-                            handleUserApprove={handleUserApprove}
+                            allUsers.map((singleUser, index) => <TableRows
+                                key={singleUser._id}
+                                index={index}
+                                singleUser={singleUser}
+                                activateUserAccount={activateUserAccount}
+                                blockUserAccount={blockUserAccount} 
+                                
                             />)
                         }
                     </tbody>

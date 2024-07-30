@@ -32,14 +32,15 @@ const Login = () => {
 
             setLoading(true);
             const res = await axiosPublic.post('/login', loginData);
-            if (res?.data?.accountStatus === 'pending') {
+
+            //show error if the account is not activated or blocked
+            if (res?.data?.accountStatus === 'pending' || res?.data?.accountStatus === 'blocked') {
                 Swal.fire({
                     text: `${res?.data?.message}`,
                     icon: "error"
                 });
                 form.reset();
             }
-
 
             if (res.data.token) {
                 saveAccessToken(res.data.token);
@@ -72,7 +73,9 @@ const Login = () => {
 
             setLoading(true);
             const res = await axiosPublic.post('/login', logInData);
-            if (res?.data?.accountStatus === 'pending') {
+
+            //show error if the account is not activated or blocked
+            if (res?.data?.accountStatus === 'pending' || res?.data?.accountStatus === 'blocked') {
                 Swal.fire({
                     text: `${res?.data?.message}`,
                     icon: "error"
@@ -80,6 +83,8 @@ const Login = () => {
                 form.reset();
             }
 
+
+            //save token in the LS
             if (res.data.token) {
                 saveAccessToken(res.data.token);
                 if (localStorage.getItem('access-token')) {
