@@ -3,16 +3,16 @@ import { AuthContext } from '../Provider/AuthProvider';
 
 const useRole = () => {
 
-    const  {user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
-    const role = user?.role;
+    if (!user) return ['']
 
-    if(role === 'admin')
+    const role = user?.role || '';
+
+    if (role === 'admin' || role === 'user' || role === 'agent')
         return [role];
-    if(role === 'user') 
-        return [role];
-    if(role === 'agent')
-        return [role];
+
+    return [''];
 };
 
 export default useRole;

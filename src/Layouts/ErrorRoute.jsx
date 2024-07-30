@@ -24,7 +24,7 @@ const ErrorRoute = () => {
             <h2 className="text-xl text-red-600 font-medium">Something wrong happened</h2>
 
             <Link className="mt-4 btn bg-cwViolate text-white hover:bg-cwOrange" to='/'>
-                    DASHBOARD
+                DASHBOARD
             </Link>
         </div>
     );

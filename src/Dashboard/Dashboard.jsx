@@ -7,6 +7,7 @@ const Dashboard = () => {
     const { user } = useContext(AuthContext);
     const [role] = useRole();
 
+
     const { email, name, mobileNumber, balance } = user;
 
     return (
