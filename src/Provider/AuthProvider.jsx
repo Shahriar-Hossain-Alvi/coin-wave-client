@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import useAxiosPublic from "../Hooks/useAxiosPublic";
+import Swal from "sweetalert2";
 
 
 export const AuthContext = createContext(null);
@@ -11,7 +12,7 @@ const AuthProvider = ({ children }) => {
         const userInfo = localStorage.getItem('userInfo');
         return userInfo ? JSON.parse(userInfo) : null;
     });
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const axiosPublic = useAxiosPublic();
 
 
@@ -53,6 +54,32 @@ const AuthProvider = ({ children }) => {
     }
 
 
+    //function to update user info after first login
+    const updateUserInfoAfterFirstLogin = async (id) => {
+
+        if (user.firstTimeLogin === 'yes') {
+            const res = await axiosPublic.patch('/usersFirstLogin', { id });
+
+            if (res.data.modifiedCount > 0) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Congratulations! You've got 40tk bonus",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+                //update local user data
+                const updatedUser = { ...user, balance: user.balance + 40, firstTimeLogin: 'no' };
+                setUser(updatedUser);
+                localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+            }
+
+        }
+    };
+
+
+
     //logout user
     const logout = () => {
         localStorage.removeItem('access-token');
@@ -72,7 +99,8 @@ const AuthProvider = ({ children }) => {
         loading,
         setLoading,
         getUserInfo,
-        logout
+        logout,
+        updateUserInfoAfterFirstLogin
     }
 
     return (

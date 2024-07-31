@@ -6,6 +6,7 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
 
+    //get all users data
     const { data: allUsers = [], isLoading, isError, error, refetch } = useQuery({
         queryKey: ['allUsers'],
         queryFn: async () => {
@@ -14,6 +15,7 @@ const AllUsers = () => {
         }
     });
 
+    //function to activate user account
     const activateUserAccount = async (id) => {
         const updateStatus = {
             id, status: 'active'
@@ -24,7 +26,7 @@ const AllUsers = () => {
         if (res.data.modifiedCount > 0) refetch();
     }
 
-
+    //function to block user account
     const blockUserAccount = async (id) => {
         const updateStatus = {
             id, status: 'blocked'
@@ -41,7 +43,7 @@ const AllUsers = () => {
             <h1 className="text-center mt-5 font-bold text-3xl text-cwViolate">Users List</h1>
 
             <h2 className="font-medium mt-3 ml-1 font-sans text-xl">Total number of users & agents: {allUsers.length}</h2>
-
+            
             <div>
                 {
                     isError &&
@@ -55,7 +57,7 @@ const AllUsers = () => {
             </div>
 
             <div className="overflow-x-auto">
-                <table className="table">
+                <table className="table table-sm">
                     {/* head */}
                     <thead>
                         <tr>

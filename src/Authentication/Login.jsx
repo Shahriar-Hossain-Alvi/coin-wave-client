@@ -18,6 +18,8 @@ const Login = () => {
     const location = useLocation();
     const from = location?.state?.from?.pathname || '/';
 
+
+    //function to login using email address
     const handleLogInWithEmail = async (e) => {
         e.preventDefault();
         const form = e.target;
@@ -58,6 +60,8 @@ const Login = () => {
         }
     }
 
+
+    //function to login using mobile number
     const handleLogInWithMobile = async (e) => {
         e.preventDefault();
         const form = e.target;

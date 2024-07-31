@@ -13,7 +13,7 @@ const TableRows = ({ singleUser, index, activateUserAccount, blockUserAccount })
             <td className='capitalize'>{role}</td>
 
 
-            {/* status show */}
+            {/* show status */}
             <td className='capitalize'>
                 {
                     status === 'active' &&
@@ -31,6 +31,12 @@ const TableRows = ({ singleUser, index, activateUserAccount, blockUserAccount })
                     status === 'blocked' &&
                     <span>
                         {status}<GoDotFill className='text-error inline' />
+                    </span>
+                }
+                {
+                    status === 'admin' &&
+                    <span>
+                        {status}<GoDotFill className='text-cwViolate inline' />
                     </span>
                 }
             </td>

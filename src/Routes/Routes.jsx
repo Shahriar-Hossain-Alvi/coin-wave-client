@@ -9,6 +9,7 @@ import PrivateRoute from "./PrivateRoute";
 import AllUsers from "../Dashboard/AdminDashboardRoutes/AllUsers";
 import AllTransactions from "../Dashboard/AdminDashboardRoutes/AllTransactions";
 import AdminRoute from "./AdminRoute";
+import Transactions from "../Dashboard/User/Transactions";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,12 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <PrivateRoute><Dashboard /></PrivateRoute>
+      },
+
+      //user routes
+      {
+        path: '/transactions',
+        element: <PrivateRoute><Transactions /></PrivateRoute>
       },
 
       // admin routes
