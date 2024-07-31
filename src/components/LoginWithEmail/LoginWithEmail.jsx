@@ -42,13 +42,15 @@ const LoginWithEmail = ({ handleLogInWithEmail, pinError }) => {
                             <p className='text-red-600'>{pinError}</p>
                         </div>
                         <div className="form-control mt-6">
-                            <button className="btn bg-cwViolate hover:bg-cwOrange text-white">
-                                {
-                                    loading ? <ImSpinner4 className='text-2xl animate-spin' />
-                                        :
-                                        'Sign up'
-                                }
-                            </button>
+                            {
+                                loading ?
+                                    <button disabled className="btn bg-cwViolate hover:bg-cwOrange text-white">
+                                        <ImSpinner4 className='text-2xl animate-spin' />
+                                    </button>
+                                    :
+                                    <button className="btn bg-cwViolate hover:bg-cwOrange text-white">Sign up
+                                    </button>
+                            }
                         </div>
                     </form>
                 </div>

@@ -57,8 +57,13 @@ const AuthProvider = ({ children }) => {
     //function to update user info after first login
     const updateUserInfoAfterFirstLogin = async (id) => {
 
-        if (user.firstTimeLogin === 'yes') {
-            const res = await axiosPublic.patch('/usersFirstLogin', { id });
+        if (user.role === 'user' && user.firstTimeLogin === 'yes') {
+            const token = localStorage.getItem('access-token');
+            const res = await axiosPublic.patch('/usersFirstLogin', { id }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
             if (res.data.modifiedCount > 0) {
                 Swal.fire({
@@ -71,6 +76,32 @@ const AuthProvider = ({ children }) => {
 
                 //update local user data
                 const updatedUser = { ...user, balance: user.balance + 40, firstTimeLogin: 'no' };
+                setUser(updatedUser);
+                localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+            }
+
+        }
+
+
+        if (user.role === 'agent' && user.firstTimeLogin === 'yes') {
+            const token = localStorage.getItem('access-token');
+            const res = await axiosPublic.patch('/agentsFirstLogin', { id }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (res.data.modifiedCount > 0) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Congratulations! You've got 10000tk bonus",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+                //update local user data
+                const updatedUser = { ...user, balance: user.balance + 10000, firstTimeLogin: 'no' };
                 setUser(updatedUser);
                 localStorage.setItem('userInfo', JSON.stringify(updatedUser));
             }

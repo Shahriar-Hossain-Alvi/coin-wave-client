@@ -14,7 +14,7 @@ const Dashboard = () => {
         }
 
         handleFirstLoginBonus();
-    }, [id, updateUserInfoAfterFirstLogin, user]);
+    }, [id, updateUserInfoAfterFirstLogin]);
 
 
     const { email, name, mobileNumber, balance } = user;
