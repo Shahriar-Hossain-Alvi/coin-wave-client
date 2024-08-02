@@ -57,7 +57,7 @@ const AuthProvider = ({ children }) => {
     //function to update user info after first login
     const updateUserInfoAfterFirstLogin = async (id) => {
 
-        if (user.role === 'user' && user.firstTimeLogin === 'yes') {
+        if (user?.role === 'user' && user?.firstTimeLogin === 'yes') {
             const token = localStorage.getItem('access-token');
             const res = await axiosPublic.patch('/usersFirstLogin', { id }, {
                 headers: {
@@ -83,7 +83,7 @@ const AuthProvider = ({ children }) => {
         }
 
 
-        if (user.role === 'agent' && user.firstTimeLogin === 'yes') {
+        if (user?.role === 'agent' && user?.firstTimeLogin === 'yes') {
             const token = localStorage.getItem('access-token');
             const res = await axiosPublic.patch('/agentsFirstLogin', { id }, {
                 headers: {

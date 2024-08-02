@@ -4,15 +4,14 @@
 @tailwind components;
 @tailwind utilities;
 
-::-webkit-scrollbar{
-    width: 25px;
-}
+/* custom css */
 
-::-webkit-scrollbar-track{
-    background-color: #083061;
-}
+@layer base {
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
 
-::-webkit-scrollbar-thumb{
-    background-color: #2bb4e6;
-    border-radius: 10px;
-}
+  

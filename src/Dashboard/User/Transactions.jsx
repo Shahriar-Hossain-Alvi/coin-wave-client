@@ -2,7 +2,7 @@
 
 const Transactions = () => {
     return (
-        <div>
+        <div className="min-h-screen">
             <h2>User transactions</h2>
         </div>
     );

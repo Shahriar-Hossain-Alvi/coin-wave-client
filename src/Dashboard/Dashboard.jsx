@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 import { Helmet } from "react-helmet-async";
 import useRole from "../Hooks/useRole";
+import SectionHeading from "../components/SectionHeading/SectionHeading";
 
 const Dashboard = () => {
     const { user, updateUserInfoAfterFirstLogin } = useContext(AuthContext);
@@ -25,7 +26,7 @@ const Dashboard = () => {
                 <title>Dashboard | Coin Wave</title>
             </Helmet>
 
-            <h1 className="text-center mt-5 font-bold text-3xl text-cwViolate">Dashboard</h1>
+            <SectionHeading title={'Dashboard'} />
 
             <div className="mt-10 flex">
                 <div className={`flex-1 font-sans ${role === 'admin' && 'text-center space-y-3'}`}>

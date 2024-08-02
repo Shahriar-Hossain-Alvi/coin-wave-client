@@ -68,6 +68,10 @@ const Sidebar = () => {
                         </li>
 
                         <li>
+                            <NavLink to='/sendMoney'>Send Money</NavLink>
+                        </li>
+
+                        <li>
                             <NavLink to='/transactions'>Transactions</NavLink>
                         </li>
 
@@ -104,7 +108,7 @@ const Sidebar = () => {
                     {/* routes for admin */}
                     {
                         role === 'admin' &&
-                        <ul className="menu bg-cwViolate text-white min-h-full w-80 p-4">
+                        <ul className="menu bg-cwViolate text-white rounded-br-xl w-80 p-4">
                             <li className="mt-2 font-bold text-xl mb-5">
                                 <Link to='/'>
                                     Coin Wave
@@ -122,13 +126,20 @@ const Sidebar = () => {
                             <li>
                                 <NavLink to='/allTransactions'>All Transactions</NavLink>
                             </li>
+
+                            <li className="mt-5">
+                                <button onClick={handleLogout} className="btn w-full bg-cwViolate text-white border-none shadow-lg hover:bg-cwOrange text-lg font-medium">
+                                    Logout
+                                    <FiLogOut />
+                                </button>
+                            </li>
                         </ul>
                     }
 
                     {/* routes for agent */}
                     {
                         role === 'agent' &&
-                        <ul className="menu bg-cwViolate text-white min-h-full w-80 p-4">
+                        <ul className="menu bg-cwViolate text-white rounded-br-xl w-80 p-4">
                             <li className="mt-2 font-bold text-xl mb-5">
                                 <Link to='/'>
                                     Coin Wave
@@ -146,13 +157,20 @@ const Sidebar = () => {
                             <li>
                                 <NavLink to='/cashOutRequests'>Cash-out Requests</NavLink>
                             </li>
+
+                            <li className="mt-5">
+                                <button onClick={handleLogout} className="btn w-full bg-cwViolate text-white border-none shadow-lg hover:bg-cwOrange text-lg font-medium">
+                                    Logout
+                                    <FiLogOut />
+                                </button>
+                            </li>
                         </ul>
                     }
 
                     {/* routes for users */}
                     {
                         role === "user" &&
-                        <ul className="menu bg-cwViolate text-white min-h-full w-80 p-4">
+                        <ul className="menu bg-cwViolate text-white rounded-br-xl w-80 p-4">
                             <li className="mt-2 font-bold text-xl mb-5">
                                 <Link to='/'>
                                     Coin Wave
@@ -162,6 +180,10 @@ const Sidebar = () => {
 
                             <li>
                                 <NavLink to='/'>Dashboard</NavLink>
+                            </li>
+
+                            <li>
+                                <NavLink to='/sendMoney'>Send Money</NavLink>
                             </li>
 
                             <li>
@@ -175,9 +197,15 @@ const Sidebar = () => {
                             <li>
                                 <NavLink to='/cashOut'>Cash-out</NavLink>
                             </li>
+
+                            <li className="mt-5">
+                                <button onClick={handleLogout} className="btn w-full bg-cwViolate text-white border-none shadow-lg hover:bg-cwOrange text-lg font-medium">
+                                    Logout
+                                    <FiLogOut />
+                                </button>
+                            </li>
                         </ul>
                     }
-
                 </div>
             </div>
         </div>
