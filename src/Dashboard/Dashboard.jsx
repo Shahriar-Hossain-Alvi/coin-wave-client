@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 import { Helmet } from "react-helmet-async";
 import useRole from "../Hooks/useRole";
@@ -9,13 +9,9 @@ const Dashboard = () => {
     const id = user._id;
     const [role] = useRole();
 
-    useEffect(() => {
-        const handleFirstLoginBonus = async () => {
-            await updateUserInfoAfterFirstLogin(id);
-        }
-
-        handleFirstLoginBonus();
-    }, [id, updateUserInfoAfterFirstLogin]);
+    if (user.firstTimeLogin === 'yes') {
+        updateUserInfoAfterFirstLogin(id);
+    }
 
 
     const { email, name, mobileNumber, balance } = user;
