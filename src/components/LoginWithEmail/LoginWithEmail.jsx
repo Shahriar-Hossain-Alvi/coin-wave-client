@@ -38,7 +38,7 @@ const LoginWithEmail = ({ handleLogInWithEmail, pinError }) => {
                             <label className="label">
                                 <span className="label-text">PIN (must use 5 digit)</span>
                             </label>
-                            <input name="pin" type="number" placeholder="Enter a 5 digit pin number (Not more or less than 5)" className="input input-bordered" required />
+                            <input name="pin" type="password" placeholder="Enter a 5 digit pin number (Not more or less than 5)" className="input input-bordered" required />
                             <p className='text-red-600'>{pinError}</p>
                         </div>
                         <div className="form-control mt-6">

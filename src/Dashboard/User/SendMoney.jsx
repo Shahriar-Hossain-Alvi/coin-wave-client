@@ -10,7 +10,11 @@ const SendMoney = () => {
     const { user } = useContext(AuthContext);
     const [receiver, setReceiver] = useState([]);
     const axiosSecure = useAxiosSecure();
+    const [amountError, setAmountError] = useState('');
+    const [pinError, setPinError] = useState('');
+    const { name, email, mobileNumber } = receiver;
 
+    // function to search the receiver
     const searchReceiver = async e => {
         e.preventDefault();
         const form = e.target;
@@ -38,10 +42,50 @@ const SendMoney = () => {
         form.reset();
     }
 
-    console.log(receiver);
+
+    // function to send money
+    const handleSendMoney = e => {
+        e.preventDefault();
+        const form = e.target;
+
+        // sender info
+        const senderName = user.name;
+        const senderEmail = user.email;
+        const senderMobileNumber = user.mobileNumber;
+
+        // receiver info
+        const receiverName = form.receiverName.value;
+        const receiverEmail = form.receiverEmail.value;
+        const receiverMobileNumber = form.receiverMobileNumber.value;
+
+        const sentAmount = form.sendMoneyAmount.value;
+        const pin = form.pin.value;
+
+        // show error if the sending amount is bigger than the current balance
+        if (sentAmount > user.balance || sentAmount < 50) {
+            setAmountError('Insufficient Balance');
+            return;
+        }
+
+        if (pin.length !== 5) {
+            setPinError('Wrong PIN');
+            return;
+        }
+
+        const sendMoneyInfo = {
+            senderName, senderEmail, senderMobileNumber,
+            receiverName, receiverEmail, receiverMobileNumber,
+            sentAmount, pin
+        }
+
+        setAmountError('');
+        setPinError('');
+
+        console.log(sendMoneyInfo);
+    }
 
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen lg:mx-5 mx-2">
 
             <Helmet>
                 <title>Send Money | Coin Wave</title>
@@ -49,12 +93,17 @@ const SendMoney = () => {
 
             <SectionHeading title={'Send Money'} />
 
-            <Marquee>
-                <div className="flex gap-10 font-medium text-red-600 font-sans">
-                    <h1>*Minimum Transaction limit 50 taka*</h1>
-                    <h1>*A fee of 5 taka will be charged on send money over 100 taka*</h1>
-                </div>
-            </Marquee>
+            <div className="text-red-500 font-sans font-medium max-w-xs md:max-w-lg lg:max-w-2xl mx-auto">
+                <Marquee
+                    pauseOnHover={true}
+                >
+                    <h1 className="mx-5">*Minimum Transaction limit <span className="font-bold underline">50 taka</span>*</h1>
+
+                    <h1 className="mx-5">*A fee of <span className="font-bold underline">5 taka</span> will be charged on send money over <span className="font-bold underline">100 taka</span>*</h1>
+
+                    <h1 className="mx-5">*Check the receivers current <span className="font-bold underline">account status</span> before sending money*</h1>
+                </Marquee>
+            </div>
 
 
             {/* Search for a valid receiver with phone number */}
@@ -65,33 +114,96 @@ const SendMoney = () => {
 
 
                 {/* search for receiver */}
-                <form onSubmit={searchReceiver} className="flex gap-2">
-                    <input name="receiverNumber" type="number" placeholder="Enter Receiver Number" className="input w-full input-bordered inline" required />
+                <form onSubmit={searchReceiver} className="flex flex-row gap-2">
+                    <input name="receiverNumber" type="number" placeholder="Enter Receiver Number" className="input input-bordered w-full" required />
 
-                    <input type="submit" value="Search" className="btn bg-cwViolate text-white hover:bg-cwOrange" />
+                    <input type="submit" value="Search" className="btn bg-cwViolate  text-white hover:bg-cwOrange" />
                 </form>
             </div>
 
 
-            <div className="flex justify-between gap-4 items-center font-sans mt-10">
+            {/* Display Receiver information */}
+            <div className="text-center mt-10 mb-10">
+                <h3 className="font-semibold text-2xl">Receivers Information</h3>
 
-                {/* enter send money amount */}
-                <div className="w-3/4">
-                    <label className="label">
-                        <span className="label-text font-semibold text-lg">Enter Amount</span>
-                    </label>
-                    <input name="sendMoney" type="number" placeholder="Enter amount" className="input w-full input-bordered" required />
-                </div>
+                <form onSubmit={handleSendMoney} className="w-full font-sans">
 
-                {/* show current balance */}
-                <div className="w-1/4">
-                    <label className="label">
-                        <span className="label-text font-semibold text-lg">Current Balance</span>
-                    </label>
-                    <button className="btn bg-success text-white w-full text-xl hover:bg-success no-animation font-sans">{user.balance}tk</button>
-                </div>
+                    {/* name */}
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text font-semibold text-lg">Name</span>
+                        </label>
+                        <input name="receiverName" type="text" placeholder="Receivers name will appear here"
+                            value={name ? name : ''} className="input input-bordered font-semibold" readOnly />
+                    </div>
+
+                    {/* email */}
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text font-semibold text-lg">Email</span>
+                        </label>
+                        <input name="receiverEmail" type="email" placeholder="Receivers email address will appear here"
+                            value={email ? email : ''} className="input input-bordered font-semibold" readOnly />
+                    </div>
+
+                    {/* mobile number */}
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text font-semibold text-lg">Mobile Number</span>
+                        </label>
+                        <input name="receiverMobileNumber" type="number" placeholder="Receivers mobile number will appear here"
+                            value={mobileNumber ? mobileNumber : ''} className="input input-bordered font-semibold" readOnly />
+                    </div>
+
+
+                    {/* Enter money amount */}
+                    <div className="flex flex-row justify-between gap-4 items-center">
+                        <div className="w-1/2 md:w-3/4 form-control">
+                            <label className="label">
+                                <span className="label-text font-semibold text-lg">Enter Amount</span>
+                            </label>
+                            {
+                                user.balance < 50 ?
+                                    <input name="sendMoneyAmount" type="number" placeholder="Enter amount" className="input w-full input-bordered" required disabled />
+                                    :
+                                    <input name="sendMoneyAmount" type="number" placeholder="Enter amount" className="input w-full input-bordered" required />
+                            }
+                            <span className="text-red-500">{amountError}</span>
+                        </div>
+
+                        {/* show current balance */}
+                        <div className="w-1/2 md:w-1/4">
+                            <label className="label">
+                                <span className="label-text font-semibold text-lg">Current Balance</span>
+                            </label>
+                            {
+                                user.balance < 50 ?
+                                    <button type="button" className="btn bg-error text-white w-full text-xl hover:bg-error no-animation font-sans">{user.balance}tk</button>
+                                    :
+                                    <button type="button" className="btn bg-success text-white w-full text-xl hover:bg-success no-animation font-sans">{user.balance}tk</button>
+                            }
+                        </div>
+                    </div>
+
+
+                    {/* enter pin number */}
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">PIN</span>
+                        </label>
+                        <input name="pin" type="password" placeholder="Enter you pin number" className="input input-bordered" required />
+                        <span className="text-red-500">{pinError}</span>
+                    </div>
+                    <div className="form-control mt-6">
+                        {
+                            receiver.length === 0 ?
+                                <button disabled className="btn text-white hover:bg-cwOrange">SEND</button>
+                                :
+                                <button className="btn bg-cwViolate text-white hover:bg-cwOrange">SEND</button>
+                        }
+                    </div>
+                </form>
             </div>
-
         </div>
     );
 };

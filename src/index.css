@@ -14,4 +14,24 @@
     }
   }
 
+  ::-webkit-scrollbar {
+    width: 20px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: #f1f1f1; /* Add a background color for better visibility */
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #604CC3; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #483599; /* Darker shade on hover */
+  }
   

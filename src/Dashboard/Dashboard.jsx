@@ -24,8 +24,9 @@ const Dashboard = () => {
 
             <SectionHeading title={'Dashboard'} />
 
-            <div className="mt-10 flex">
-                <div className={`flex-1 font-sans ${role === 'admin' && 'text-center space-y-3'}`}>
+            <div className="mt-10 flex flex-col md:flex-row">
+
+                <div className={`flex-1 font-sans ${role === 'admin' && 'text-center space-y-3'} text-center md:text-left mb-5 md:mb-0`}>
                     <h1 className="text-2xl font-bold">Name: <span className="font-semibold">{name}</span></h1>
 
                     <h4 className="text-2xl font-bold">Email address: <span className="font-semibold">{email}</span></h4>
