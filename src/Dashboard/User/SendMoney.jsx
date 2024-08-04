@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import Marquee from "react-fast-marquee";
 
 const SendMoney = () => {
-    const { user } = useContext(AuthContext);
+    const { user, setUser } = useContext(AuthContext);
     const [receiver, setReceiver] = useState([]);
     const axiosSecure = useAxiosSecure();
     const [amountError, setAmountError] = useState('');
@@ -44,7 +44,7 @@ const SendMoney = () => {
 
 
     // function to send money
-    const handleSendMoney = e => {
+    const handleSendMoney = async e => {
         e.preventDefault();
         const form = e.target;
 
@@ -58,7 +58,7 @@ const SendMoney = () => {
         const receiverEmail = form.receiverEmail.value;
         const receiverMobileNumber = form.receiverMobileNumber.value;
 
-        const sentAmount = form.sendMoneyAmount.value;
+        const sentAmount = parseInt(form.sendMoneyAmount.value);
         const pin = form.pin.value;
 
         // show error if the sending amount is bigger than the current balance
@@ -66,11 +66,13 @@ const SendMoney = () => {
             setAmountError('Insufficient Balance');
             return;
         }
+        setAmountError('');
 
         if (pin.length !== 5) {
             setPinError('Wrong PIN');
             return;
         }
+        setPinError('');
 
         const sendMoneyInfo = {
             senderName, senderEmail, senderMobileNumber,
@@ -78,11 +80,46 @@ const SendMoney = () => {
             sentAmount, pin
         }
 
-        setAmountError('');
-        setPinError('');
 
-        console.log(sendMoneyInfo);
+        const res = await axiosSecure.post('/sendMoney', sendMoneyInfo);
+
+        //show alert for wrong pin number
+        if (res.data.message === "Incorrect PIN number") {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Transaction failed",
+                text: "Provide correct pin number",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+
+        //show successful transaction message
+        if (res.data.insertedId) {
+            form.reset();
+            setReceiver([]);
+
+            // Update user balance in local storage and state
+            const newBalance = user.balance - sentAmount - (sentAmount > 100 ? 5 : 0);
+            user.balance = newBalance;
+            localStorage.setItem('userInfo', JSON.stringify(user));
+            setUser(user);
+
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Transaction Successful",
+                showConfirmButton: false,
+                timer: 1500
+            });
+
+        }
     }
+
+
+
+
 
     return (
         <div className="min-h-screen lg:mx-5 mx-2">
@@ -123,87 +160,81 @@ const SendMoney = () => {
 
 
             {/* Display Receiver information */}
-            <div className="text-center mt-10 mb-10">
-                <h3 className="font-semibold text-2xl">Receivers Information</h3>
+            {
+                receiver.length !== 0 &&
+                <div className="text-center mt-10 mb-10">
+                    <h3 className="font-semibold text-2xl">Receivers Information</h3>
 
-                <form onSubmit={handleSendMoney} className="w-full font-sans">
+                    <form onSubmit={handleSendMoney} className="w-full font-sans">
 
-                    {/* name */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text font-semibold text-lg">Name</span>
-                        </label>
-                        <input name="receiverName" type="text" placeholder="Receivers name will appear here"
-                            value={name ? name : ''} className="input input-bordered font-semibold" readOnly />
-                    </div>
-
-                    {/* email */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text font-semibold text-lg">Email</span>
-                        </label>
-                        <input name="receiverEmail" type="email" placeholder="Receivers email address will appear here"
-                            value={email ? email : ''} className="input input-bordered font-semibold" readOnly />
-                    </div>
-
-                    {/* mobile number */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text font-semibold text-lg">Mobile Number</span>
-                        </label>
-                        <input name="receiverMobileNumber" type="number" placeholder="Receivers mobile number will appear here"
-                            value={mobileNumber ? mobileNumber : ''} className="input input-bordered font-semibold" readOnly />
-                    </div>
-
-
-                    {/* Enter money amount */}
-                    <div className="flex flex-row justify-between gap-4 items-center">
-                        <div className="w-1/2 md:w-3/4 form-control">
+                        {/* name */}
+                        <div className="form-control">
                             <label className="label">
-                                <span className="label-text font-semibold text-lg">Enter Amount</span>
+                                <span className="label-text font-semibold text-lg">Name</span>
                             </label>
-                            {
-                                user.balance < 50 ?
-                                    <input name="sendMoneyAmount" type="number" placeholder="Enter amount" className="input w-full input-bordered" required disabled />
-                                    :
-                                    <input name="sendMoneyAmount" type="number" placeholder="Enter amount" className="input w-full input-bordered" required />
-                            }
-                            <span className="text-red-500">{amountError}</span>
+                            <input name="receiverName" type="text" placeholder="Receivers name will appear here"
+                                value={name ? name : ''} className="input input-bordered font-semibold" readOnly />
                         </div>
 
-                        {/* show current balance */}
-                        <div className="w-1/2 md:w-1/4">
+                        {/* email */}
+                        <div className="form-control">
                             <label className="label">
-                                <span className="label-text font-semibold text-lg">Current Balance</span>
+                                <span className="label-text font-semibold text-lg">Email</span>
                             </label>
-                            {
-                                user.balance < 50 ?
-                                    <button type="button" className="btn bg-error text-white w-full text-xl hover:bg-error no-animation font-sans">{user.balance}tk</button>
-                                    :
-                                    <button type="button" className="btn bg-success text-white w-full text-xl hover:bg-success no-animation font-sans">{user.balance}tk</button>
-                            }
+                            <input name="receiverEmail" type="email" placeholder="Receivers email address will appear here"
+                                value={email ? email : ''} className="input input-bordered font-semibold" readOnly />
                         </div>
-                    </div>
+
+                        {/* mobile number */}
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text font-semibold text-lg">Mobile Number</span>
+                            </label>
+                            <input name="receiverMobileNumber" type="number" placeholder="Receivers mobile number will appear here"
+                                value={mobileNumber ? mobileNumber : ''} className="input input-bordered font-semibold" readOnly />
+                        </div>
 
 
-                    {/* enter pin number */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">PIN</span>
-                        </label>
-                        <input name="pin" type="password" placeholder="Enter you pin number" className="input input-bordered" required />
-                        <span className="text-red-500">{pinError}</span>
-                    </div>
-                    <div className="form-control mt-6">
-                        {
-                            receiver.length === 0 ?
-                                <button disabled className="btn text-white hover:bg-cwOrange">SEND</button>
-                                :
-                                <button className="btn bg-cwViolate text-white hover:bg-cwOrange">SEND</button>
-                        }
-                    </div>
-                </form>
-            </div>
+                        {/* Enter money amount */}
+                        <div className="flex flex-row justify-between gap-4 items-center">
+                            <div className="w-1/2 md:w-3/4 form-control">
+                                <label className="label">
+                                    <span className="label-text font-semibold text-lg">Enter Amount
+                                    </span>
+                                </label>
+                                <input name="sendMoneyAmount" type="number" placeholder="Enter amount" className="input w-full input-bordered" required />
+                                <span className="text-red-500">{amountError}</span>
+                            </div>
+
+                            {/* show current balance */}
+                            <div className="w-1/2 md:w-1/4">
+                                <label className="label">
+                                    <span className="label-text font-semibold text-lg">Current Balance</span>
+                                </label>
+                                {
+                                    user.balance < 50 ?
+                                        <button type="button" className="btn bg-error text-white w-full text-xl hover:bg-error no-animation font-sans">{user.balance}tk</button>
+                                        :
+                                        <button type="button" className="btn bg-success text-white w-full text-xl hover:bg-success no-animation font-sans">{user.balance}tk</button>
+                                }
+                            </div>
+                        </div>
+
+
+                        {/* enter pin number */}
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">PIN</span>
+                            </label>
+                            <input name="pin" type="password" placeholder="Enter you pin number" className="input input-bordered" required />
+                            <span className="text-red-500">{pinError}</span>
+                        </div>
+                        <div className="form-control mt-6">
+                            <button className="btn bg-cwViolate text-white hover:bg-cwOrange">SEND</button>
+                        </div>
+                    </form>
+                </div>
+            }
         </div>
     );
 };
