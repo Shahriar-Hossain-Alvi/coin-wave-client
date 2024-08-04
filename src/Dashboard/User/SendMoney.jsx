@@ -5,14 +5,18 @@ import { AuthContext } from "../../Provider/AuthProvider";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import Marquee from "react-fast-marquee";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const SendMoney = () => {
+    // todo add the sentAmount to the receivers account
+
     const { user, setUser } = useContext(AuthContext);
     const [receiver, setReceiver] = useState([]);
     const axiosSecure = useAxiosSecure();
     const [amountError, setAmountError] = useState('');
     const [pinError, setPinError] = useState('');
     const { name, email, mobileNumber } = receiver;
+    const [sendMoneyLoading, setSendMoneyLoading] = useState(false);
 
     // function to search the receiver
     const searchReceiver = async e => {
@@ -28,6 +32,9 @@ const SendMoney = () => {
                 text: "You cannot send money to the same number as yours",
                 icon: "error"
             });
+            form.reset();
+            setReceiver([]);
+            return;
         }
 
         if (res.data.message === "not found") {
@@ -36,12 +43,14 @@ const SendMoney = () => {
                 text: "Enter the correct number or ask the receiver if they have an account with us.",
                 icon: "error"
             });
+            setReceiver([]);
+            form.reset();
+            return;
         }
 
         setReceiver(res.data);
         form.reset();
     }
-
 
     // function to send money
     const handleSendMoney = async e => {
@@ -68,11 +77,14 @@ const SendMoney = () => {
         }
         setAmountError('');
 
+        //show error if the pin is not 5 digits
         if (pin.length !== 5) {
             setPinError('Wrong PIN');
             return;
         }
         setPinError('');
+
+
 
         const sendMoneyInfo = {
             senderName, senderEmail, senderMobileNumber,
@@ -81,6 +93,7 @@ const SendMoney = () => {
         }
 
 
+        setSendMoneyLoading(true);
         const res = await axiosSecure.post('/sendMoney', sendMoneyInfo);
 
         //show alert for wrong pin number
@@ -95,30 +108,31 @@ const SendMoney = () => {
             });
         }
 
-        //show successful transaction message
+        //update the amount in the receivers account upon successful transaction
         if (res.data.insertedId) {
-            form.reset();
-            setReceiver([]);
+            const result = await axiosSecure.patch("/updateReceiversBalance", { sentAmount, receiverEmail });
 
-            // Update user balance in local storage and state
-            const newBalance = user.balance - sentAmount - (sentAmount > 100 ? 5 : 0);
-            user.balance = newBalance;
-            localStorage.setItem('userInfo', JSON.stringify(user));
-            setUser(user);
+            if (result.data.modifiedCount > 0) {
+                setSendMoneyLoading(false);
+                form.reset();
+                setReceiver([]);
 
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Transaction Successful",
-                showConfirmButton: false,
-                timer: 1500
-            });
+                // Update user balance in local storage and state
+                const newBalance = user.balance - sentAmount - (sentAmount > 100 ? 5 : 0);
+                user.balance = newBalance;
+                localStorage.setItem('userInfo', JSON.stringify(user));
+                setUser(user);
 
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Transaction Successful",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
         }
     }
-
-
-
 
 
     return (
@@ -230,7 +244,12 @@ const SendMoney = () => {
                             <span className="text-red-500">{pinError}</span>
                         </div>
                         <div className="form-control mt-6">
-                            <button className="btn bg-cwViolate text-white hover:bg-cwOrange">SEND</button>
+                            {
+                                sendMoneyLoading ?
+                                    <button disabled className="btn bg-cwViolate text-white hover:bg-cwOrange"><LoadingSpinner /></button>
+                                    :
+                                    <button className="btn bg-cwViolate text-white hover:bg-cwOrange">SEND</button>
+                            }
                         </div>
                     </form>
                 </div>

@@ -53,7 +53,6 @@ const AuthProvider = ({ children }) => {
         setLoading(false);
     }
 
-
     //function to update user info after first login
     const updateUserInfoAfterFirstLogin = async (id) => {
 

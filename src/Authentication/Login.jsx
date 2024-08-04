@@ -35,6 +35,15 @@ const Login = () => {
             setLoading(true);
             const res = await axiosPublic.post('/login', loginData);
 
+            //show error if the user does not have an account
+            if(res.data.message === "User not found. Sign up first if you don't have an account"){
+                Swal.fire({
+                    title: "User not found. Sign up first if you don't have an account",
+                    icon: "error"
+                });
+                form.reset();
+            }
+
             //show error if the account is not activated or blocked
             if (res?.data?.accountStatus === 'pending' || res?.data?.accountStatus === 'blocked') {
                 Swal.fire({
