@@ -17,7 +17,7 @@ const Sidebar = () => {
     }
 
     return (
-        <div id="sidebar" className="z-50">
+        <div id="sidebar" className="z-50 fixed md:relative top-0 left-0">
             {/* for large device */}
             <div className="hidden h-full lg:flex lg:flex-col lg:w-44 bg-cwViolate text-white ">
                 <button className="btn btn-block bg-transparent text-white border-none hover:bg-transparent mt-2 shadow-none text-2xl mb-5 font-bold">Coin Wave</button>
@@ -170,7 +170,7 @@ const Sidebar = () => {
                     {/* routes for users */}
                     {
                         role === "user" &&
-                        <ul className="menu bg-cwViolate text-white rounded-br-xl w-80 p-4">
+                        <ul className="menu bg-cwViolate text-white rounded-br-xl w-72 p-4">
                             <li className="mt-2 font-bold text-xl mb-5">
                                 <Link to='/'>
                                     Coin Wave

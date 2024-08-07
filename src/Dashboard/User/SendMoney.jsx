@@ -15,7 +15,7 @@ const SendMoney = () => {
     const axiosSecure = useAxiosSecure();
     const [amountError, setAmountError] = useState('');
     const [pinError, setPinError] = useState('');
-    const { name, email, mobileNumber } = receiver;
+    const { name, email, mobileNumber, status } = receiver;
     const [sendMoneyLoading, setSendMoneyLoading] = useState(false);
 
     // function to search the receiver
@@ -177,7 +177,24 @@ const SendMoney = () => {
             {
                 receiver.length !== 0 &&
                 <div className="text-center mt-10 mb-10">
-                    <h3 className="font-semibold text-2xl">Receivers Information</h3>
+                    <h3 className="font-semibold text-2xl mb-3">Receivers Information</h3>
+
+
+                    {/* show account status of the user */}
+                    {
+                        status === 'active' &&
+                        <p className="font-semibold">Account Status: <span className="badge badge-success badge-lg text-white">{status}</span></p>
+                    }
+
+                    {
+                        status === 'pending' &&
+                        <p className="font-semibold">Account Status: <span className="badge badge-warning badge-lg text-white">{status}</span></p>
+                    }
+
+                    {
+                        status === 'blocked' &&
+                        <p className="font-semibold">Account Status: <span className="badge badge-error badge-lg text-white">{status}</span></p>
+                    }
 
                     <form onSubmit={handleSendMoney} className="w-full font-sans">
 
