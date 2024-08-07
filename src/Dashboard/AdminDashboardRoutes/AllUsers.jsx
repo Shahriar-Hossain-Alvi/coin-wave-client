@@ -43,47 +43,48 @@ const AllUsers = () => {
             <h1 className="text-center mt-5 font-bold text-3xl text-cwViolate">Users List</h1>
 
             <h2 className="font-medium mt-3 ml-1 font-sans text-xl">Total number of users & agents: {allUsers.length}</h2>
-            
+
             <div>
                 {
                     isError &&
                     <p className="text-2xl font-semibold text-center text-red-500 my-5">{error.message}</p>
                 }
+            </div>
 
-                {
-                    isLoading &&
+
+            {
+                isLoading ?
                     <LoadingSpinner />
-                }
-            </div>
+                    :
+                    <div className="overflow-x-auto">
+                        <table className="table table-xs md:table-sm lg:table-md">
+                            {/* head */}
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>email</th>
+                                    <th>Role</th>
+                                    <th>Account Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
 
-            <div className="overflow-x-auto">
-                <table className="table table-sm">
-                    {/* head */}
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>email</th>
-                            <th>Role</th>
-                            <th>Account Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
+                            <tbody>
+                                {
+                                    allUsers.map((singleUser, index) => <TableRows
+                                        key={singleUser._id}
+                                        index={index}
+                                        singleUser={singleUser}
+                                        activateUserAccount={activateUserAccount}
+                                        blockUserAccount={blockUserAccount}
 
-                    <tbody>
-                        {
-                            allUsers.map((singleUser, index) => <TableRows
-                                key={singleUser._id}
-                                index={index}
-                                singleUser={singleUser}
-                                activateUserAccount={activateUserAccount}
-                                blockUserAccount={blockUserAccount} 
-                                
-                            />)
-                        }
-                    </tbody>
-                </table>
-            </div>
+                                    />)
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+            }
         </div>
     );
 };

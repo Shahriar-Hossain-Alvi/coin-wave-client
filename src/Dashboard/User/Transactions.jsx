@@ -36,7 +36,7 @@ const Transactions = () => {
 
                 {/* show error message */}
                 {
-                    isError && <span>{error.message}</span>
+                    isError && <span className="text-2xl font-semibold text-center text-red-500 my-5">{error.message}</span>
                 }
 
 
@@ -45,7 +45,7 @@ const Transactions = () => {
                     isLoading ? <LoadingSpinner />
                         :
                         <div className="overflow-x-auto">
-                            <table className="table table-xs md:table-md font-sans">
+                            <table className="table table-xs md:table-md lg:table-lg font-sans">
                                 <thead>
                                     <tr>
                                         <th>SL</th>
