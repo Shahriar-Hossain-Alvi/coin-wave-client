@@ -11,6 +11,8 @@ import AllTransactions from "../Dashboard/AdminDashboardRoutes/AllTransactions";
 import AdminRoute from "./AdminRoute";
 import Transactions from "../Dashboard/User/Transactions";
 import SendMoney from "../Dashboard/User/SendMoney";
+import CashIn from "../Dashboard/User/CashIn";
+import CashOut from "../Dashboard/User/CashOut";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
       {
         path: '/sendMoney',
         element: <PrivateRoute><SendMoney /></PrivateRoute>
+      },
+      {
+        path: '/cashIn',
+        element: <PrivateRoute><CashIn /></PrivateRoute>
+      },
+      {
+        path: '/cashOut',
+        element: <PrivateRoute><CashOut /></PrivateRoute>
       },
 
       // admin routes

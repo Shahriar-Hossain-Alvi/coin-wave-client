@@ -58,7 +58,6 @@ const AllUsers = () => {
                     :
                     <div className="overflow-x-auto">
                         <table className="table table-xs md:table-sm lg:table-md">
-                            {/* head */}
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -78,7 +77,6 @@ const AllUsers = () => {
                                         singleUser={singleUser}
                                         activateUserAccount={activateUserAccount}
                                         blockUserAccount={blockUserAccount}
-
                                     />)
                                 }
                             </tbody>
