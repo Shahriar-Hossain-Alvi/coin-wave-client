@@ -4,8 +4,8 @@ import { useContext } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 
 const axiosSecure = axios.create({
-    // baseURL: 'http://localhost:5000'
-    baseURL: 'https://coin-wave-server.vercel.app'
+    // baseURL: 'https://coin-wave-server.vercel.app',
+    baseURL: 'http://localhost:5000',
 })
 const useAxiosSecure = () => {
     const navigate = useNavigate();

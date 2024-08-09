@@ -13,12 +13,13 @@ const Transactions = () => {
     const { user } = useContext(AuthContext);
     const email = user?.email;
 
-    const { data: userTransactions = [], isLoading, isError, error } = useQuery({
-        queryKey: ['userTransactions'],
+    const { data: myTransactions = [], isLoading, isError, error } = useQuery({
+        queryKey: ['myTransactions', email],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/usersTransaction/${email}`);
+            const res = await axiosSecure.get(`/transactions/${email}`);
             return res.data;
-        }
+        },
+        enabled: !!email
     });
 
 
@@ -58,7 +59,7 @@ const Transactions = () => {
                                 </thead>
                                 <tbody>
                                     {
-                                        userTransactions.map((transaction, index) => <UserTransactionTableRow key={transaction._id}
+                                        myTransactions?.map((transaction, index) => <UserTransactionTableRow key={transaction._id}
                                             index={index}
                                             transaction={transaction}
                                         />)
