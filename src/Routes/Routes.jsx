@@ -13,6 +13,7 @@ import Transactions from "../Dashboard/User/Transactions";
 import SendMoney from "../Dashboard/User/SendMoney";
 import CashIn from "../Dashboard/User/CashIn";
 import CashOut from "../Dashboard/User/CashOut";
+import CashInRequest from "../Dashboard/Agent/CashInRequest";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,14 @@ const router = createBrowserRouter([
         path: '/cashOut',
         element: <PrivateRoute><CashOut /></PrivateRoute>
       },
+
+
+      // agent routes
+      {
+        path: '/cashInRequests',
+        element: <PrivateRoute><CashInRequest /></PrivateRoute>
+      },
+
 
       // admin routes
       {
