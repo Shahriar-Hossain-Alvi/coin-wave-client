@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import CashInRequestTableRow from "../../components/CashInRequestTableRow/CashInRequestTableRow";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import Swal from "sweetalert2";
 
 
 const CashInRequest = () => {
@@ -25,12 +26,40 @@ const CashInRequest = () => {
 
 
     // handle accept or reject
-    const acceptCashInRequest = (id)=>{
+    const acceptCashInRequest = async (id) => {
         console.log('accepted', id);
+        const cashInId = id;
+        const cashInRequestStatus = 'accepted';
+        const res = await axiosSecure.patch('/cashInRequests', { cashInId, cashInRequestStatus })
+        if (res.data.modifiedCount > 0) {
+            Swal.fire({
+                position: "top-start",
+                icon: "success",
+                title: "Cash In successful",
+                showConfirmButton: false,
+                timer: 1000
+            });
+            refetch();
+        }
+
     }
 
-    const rejectCashInRequest = (id)=>{
+    const rejectCashInRequest = async (id) => {
         console.log('rejected', id);
+        const cashInId = id;
+        const cashInRequestStatus = 'rejected';
+
+        const res = await axiosSecure.patch('/cashInRequests', { cashInId, cashInRequestStatus })
+        if (res.data.modifiedCount > 0) {
+            Swal.fire({
+                position: "top-start",
+                icon: "success",
+                title: "Cash In rejected",
+                showConfirmButton: false,
+                timer: 1000
+            });
+            refetch();
+        }
     }
 
 
@@ -51,7 +80,7 @@ const CashInRequest = () => {
                     <LoadingSpinner />
                     :
                     <div className="overflow-x-auto">
-                        <table className="table text-center">
+                        <table className="table text-center font-medium font-sans">
                             {/* head */}
                             <thead>
                                 <tr>
@@ -67,8 +96,8 @@ const CashInRequest = () => {
                                     cashInRequestData?.map((cashInData, index) => <CashInRequestTableRow
                                         key={cashInData._id}
                                         cashInData={cashInData}
-                                        index={index} 
-                                        acceptCashInRequest={acceptCashInRequest} 
+                                        index={index}
+                                        acceptCashInRequest={acceptCashInRequest}
                                         rejectCashInRequest={rejectCashInRequest}
                                     />)
                                 }

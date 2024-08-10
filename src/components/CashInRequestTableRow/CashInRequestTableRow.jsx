@@ -10,10 +10,25 @@ const CashInRequestTableRow = ({ index, cashInData, rejectCashInRequest, acceptC
             <td>{userName}</td>
             <td>{userMobileNumber}</td>
             <td>{cashInAmount}</td>
-            <td className="flex justify-center gap-2">
-                <button onClick={() => acceptCashInRequest(_id)} className="btn btn-success text-white">Accept</button>
-                <button onClick={() => rejectCashInRequest(_id)} className="btn btn-error text-white">Reject</button>
-            </td>
+            {
+                !cashInData?.cashInRequestStatus &&
+                <td className="flex justify-center gap-2">
+                    <button onClick={() => acceptCashInRequest(_id)} className="btn btn-success text-white">Accept</button>
+                    <button onClick={() => rejectCashInRequest(_id)} className="btn btn-error text-white">Reject</button>
+                </td>
+            }
+            {
+                cashInData?.cashInRequestStatus === 'accepted' &&
+                <td>
+                    <span className='badge badge-success text-white badge-lg'>Accepted</span>
+                </td>
+            }
+            {
+                cashInData?.cashInRequestStatus === 'rejected' &&
+                <td>
+                    <span className='badge badge-error text-white badge-lg'>Rejected</span>
+                </td>
+            }
         </tr>
     );
 };
