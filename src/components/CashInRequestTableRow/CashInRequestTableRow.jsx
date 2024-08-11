@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 
 
 const CashInRequestTableRow = ({ index, cashInData, rejectCashInRequest, acceptCashInRequest }) => {
-    const { _id, userName, userMobileNumber, cashInAmount } = cashInData;
+    const { _id, userName, userEmail,userMobileNumber, cashInAmount, agentEmail } = cashInData;
+    
 
     return (
         <tr>
@@ -13,7 +14,7 @@ const CashInRequestTableRow = ({ index, cashInData, rejectCashInRequest, acceptC
             {
                 !cashInData?.cashInRequestStatus &&
                 <td className="flex justify-center gap-2">
-                    <button onClick={() => acceptCashInRequest(_id)} className="btn btn-success text-white">Accept</button>
+                    <button onClick={() => acceptCashInRequest(_id, userEmail, agentEmail, cashInAmount)} className="btn btn-success text-white">Accept</button>
                     <button onClick={() => rejectCashInRequest(_id)} className="btn btn-error text-white">Reject</button>
                 </td>
             }

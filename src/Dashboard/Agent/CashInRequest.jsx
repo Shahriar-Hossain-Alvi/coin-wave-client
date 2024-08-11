@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 
 const CashInRequest = () => {
     const axiosSecure = useAxiosSecure();
-    const { user } = useContext(AuthContext);
+    const { user, setUser } = useContext(AuthContext);
     const agentsEmailAddress = user.email;
 
     //fetch cash in request data
@@ -25,25 +25,43 @@ const CashInRequest = () => {
     })
 
 
-    // handle accept or reject
-    const acceptCashInRequest = async (id) => {
-        console.log('accepted', id);
+    // accept cash in request
+    const acceptCashInRequest = async (id, userEmail, agentEmail, cashInAmount) => {
         const cashInId = id;
         const cashInRequestStatus = 'accepted';
-        const res = await axiosSecure.patch('/cashInRequests', { cashInId, cashInRequestStatus })
+
+        // update status in the cash in collection
+        const res = await axiosSecure.patch('/cashInRequests', { cashInId, cashInRequestStatus });
+
         if (res.data.modifiedCount > 0) {
-            Swal.fire({
-                position: "top-start",
-                icon: "success",
-                title: "Cash In successful",
-                showConfirmButton: false,
-                timer: 1000
-            });
-            refetch();
+
+            //update users and agents balance in the users collection 
+            const updateTheBalance = await axiosSecure.patch('/updateUserAndAgentBalanceAfterCashIn', { userEmail, agentEmail, cashInAmount });
+
+            if (updateTheBalance.data.success === true) {
+                // Update user balance in local storage and state
+                const newBalance = user.balance - cashInAmount;
+                user.balance = newBalance;
+                localStorage.setItem('userInfo', JSON.stringify(user));
+                setUser(user);
+
+                Swal.fire({
+                    position: "top-start",
+                    icon: "success",
+                    title: "Cash In successful",
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                refetch();
+            }
+
+
         }
 
     }
 
+
+    // reject cash in request
     const rejectCashInRequest = async (id) => {
         console.log('rejected', id);
         const cashInId = id;
