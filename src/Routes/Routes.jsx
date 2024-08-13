@@ -14,6 +14,7 @@ import SendMoney from "../Dashboard/User/SendMoney";
 import CashIn from "../Dashboard/User/CashIn";
 import CashOut from "../Dashboard/User/CashOut";
 import CashInRequest from "../Dashboard/Agent/CashInRequest";
+import CashOutRequest from "../Dashboard/Agent/CashOutRequest";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       {
         path: '/cashInRequests',
         element: <PrivateRoute><CashInRequest /></PrivateRoute>
+      },
+      {
+        path: '/cashOutRequests',
+        element: <PrivateRoute><CashOutRequest /></PrivateRoute>
       },
 
 

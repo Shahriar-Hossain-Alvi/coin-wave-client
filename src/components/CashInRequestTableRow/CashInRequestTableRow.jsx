@@ -2,8 +2,7 @@ import PropTypes from 'prop-types';
 
 
 const CashInRequestTableRow = ({ index, cashInData, rejectCashInRequest, acceptCashInRequest }) => {
-    const { _id, userName, userEmail,userMobileNumber, cashInAmount, agentEmail } = cashInData;
-    
+    const { _id, userName, userEmail, userMobileNumber, cashInAmount, agentEmail } = cashInData;
 
     return (
         <tr>
