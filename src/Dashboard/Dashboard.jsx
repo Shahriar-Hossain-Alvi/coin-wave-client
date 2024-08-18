@@ -3,6 +3,7 @@ import { AuthContext } from "../Provider/AuthProvider";
 import { Helmet } from "react-helmet-async";
 import useRole from "../Hooks/useRole";
 import SectionHeading from "../components/SectionHeading/SectionHeading";
+import AdminDashboardContent from "../components/AdminDashboardContent/AdminDashboardContent";
 
 const Dashboard = () => {
     const { user, updateUserInfoAfterFirstLogin } = useContext(AuthContext);
@@ -39,6 +40,13 @@ const Dashboard = () => {
                     <button className="btn btn-lg bg-cwViolate text-white hover:bg-cwViolate no-animation font-sans">Balance: {balance}tk</button>
                 }
             </div>
+
+            {
+                role === 'admin' &&
+                <div className="mt-10">
+                    <AdminDashboardContent />
+                </div>
+            }
         </div>
     );
 };
