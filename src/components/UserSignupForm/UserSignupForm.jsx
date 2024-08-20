@@ -8,7 +8,7 @@ const UserSignupForm = ({ handleUserSignUp, pinError }) => {
                 <title>User Registration | Coin Wave </title>
             </Helmet>
 
-            <div className="hero-content flex-col">
+            <div className="hero-content mx-auto flex-col">
                 <div className="text-center">
                     <h1 className="text-5xl font-bold">Sign Up</h1>
                     <p className="py-6 text-xl font-medium">

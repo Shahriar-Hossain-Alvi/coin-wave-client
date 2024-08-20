@@ -12,7 +12,7 @@ const LoginWithEmail = ({ handleLogInWithEmail, pinError }) => {
             <Helmet>
                 <title>Login with email | Coin Wave </title>
             </Helmet>
-            <div className="hero-content flex-col">
+            <div className="hero-content mx-auto flex-col">
 
                 <div className="text-center">
                     <h1 className="text-5xl font-bold">Login</h1>
