@@ -1,4 +1,4 @@
-# Trip Tailor Bangladesh
+# Coin Wave
 - Live link: https://coin-wave-financial-service.netlify.app
 - Server side repository: https://github.com/Shahriar-Hossain-Alvi/coin-wave-server
 
