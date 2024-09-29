@@ -2,6 +2,11 @@
 - Live link: https://coin-wave-financial-service.netlify.app
 - Server side repository: https://github.com/Shahriar-Hossain-Alvi/coin-wave-server
 
+# Admin Info
+- Email: admin@coinwave.com
+- Mobile: 01122334455
+- Password: 90909
+
 ## About: 
 Coin-Wave is a mobile financial service application, which is used to send, cash in or cash out money through website. Users can cash in or cash out money through an agent, send money to another user and see their transaction details. 
 
